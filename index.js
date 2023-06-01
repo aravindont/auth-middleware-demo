@@ -6,7 +6,7 @@ const PORT = 8080;
 // Middleware to check if user is authenticated
 const checkAuthMiddleware = (req, res, next) => {
   // Check if user is authenticated
-  const isAuthenticated = /* Check user authentication, e.g., req.session.isAuthenticated */ false;
+  const isAuthenticated = /* Check user authentication, e.g., req.session.isAuthenticated */ true;
 
   if (isAuthenticated) {
     // Retrieve post data
@@ -26,6 +26,16 @@ const checkAuthMiddleware = (req, res, next) => {
     res.status(401).json({ error: "Unauthorized" });
   }
 };
+
+// Route handler
+app.get("/post", checkAuthMiddleware, (req, res) => {
+  // Access post data from request object
+  const postData = req.postData;
+
+  // Send post data as response
+  res.json(postData);
+});
+
 app.listen(PORT, () => {
   console.log(`server on http://localhost:${PORT}`);
 });
